@@ -1,71 +1,404 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#172554"><title>Sudoku Master – Brain Training</title>
-<link rel="icon" type="image/png" href="icon.png"><link rel="apple-touch-icon" href="icon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f2937">
+<title>Sudoku Master – Brain Training Edition</title>
 <style>
-:root{--navy:#172554;--blue:#2563eb;--pale:#eaf2ff;--line:#cbd5e1;--ink:#172033;--muted:#64748b;--paper:#fff;--bg:#f3f6fb;--green:#15803d;--red:#dc2626;--gold:#f59e0b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}button,select{font:inherit}button{cursor:pointer;touch-action:manipulation}.app{max-width:900px;margin:auto;padding:calc(18px + env(safe-area-inset-top, 0px)) 14px calc(34px + env(safe-area-inset-bottom, 0px))}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}.top .brand{min-width:0}.top .brand h1{line-height:1.15}.top #helpTop{flex-shrink:0}.brand{display:flex;align-items:center;gap:10px}.logo{width:44px;height:44px;border-radius:13px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:25px;font-weight:900}.brand h1{font-size:clamp(20px,4vw,28px);margin:0;color:var(--navy)}.brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:700;background:#e2e8f0;color:var(--navy)}.btn.primary{background:var(--blue);color:white}.btn.dark{background:var(--navy);color:white}.btn:disabled{opacity:.45;cursor:not-allowed}.panel{background:var(--paper);border-radius:17px;padding:14px;margin-bottom:12px;box-shadow:0 3px 14px #0f172a0a}.controls{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.field label{display:block;color:var(--muted);font-size:13px;font-weight:700;margin:0 0 5px}.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);font-weight:700}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}.stat{background:#f8fafc;border-radius:12px;padding:9px 4px}.stat b{display:block;color:var(--navy);font-size:21px}.stat span{font-size:12px;color:var(--muted)}.board-wrap{max-width:590px;margin:0 auto 12px}.board{display:grid;grid-template-columns:repeat(9,1fr);border:3px solid #1e293b;border-radius:7px;overflow:hidden;background:white;aspect-ratio:1}.cell{min-width:0;min-height:0;position:relative;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:white;color:#26364f;font-size:clamp(18px,4.8vw,31px);font-weight:600;display:flex;align-items:center;justify-content:center;padding:0}.cell:nth-child(9n){border-right:0}.cell:nth-child(n+73){border-bottom:0}.cell:nth-child(3n):not(:nth-child(9n)){border-right:2.5px solid #334155}.cell:nth-child(n+19):nth-child(-n+27),.cell:nth-child(n+46):nth-child(-n+54){border-bottom:2.5px solid #334155}.cell.given{background:#eef2f7;color:#111827;font-weight:800}.cell.related{background:#edf4ff}.cell.same{background:#bfdbfe!important;color:#1d4ed8;font-weight:900;box-shadow:inset 0 0 0 2px #60a5fa}.cell.selected{background:#bfdbfe!important;outline:3px solid var(--blue);outline-offset:-3px;z-index:1}.cell.error{color:var(--red);background:#fee2e2!important}.cell.hint{background:#dcfce7!important;outline:3px solid #16a34a;outline-offset:-3px}.notes-grid{position:absolute;inset:2px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);font-size:clamp(7px,1.7vw,11px);font-weight:500;color:#64748b;line-height:1}.notes-grid span{display:grid;place-items:center}.instruction{text-align:center;color:var(--muted);font-size:14px;margin:8px 0 12px}.keypad{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}.key{padding:12px 0;border:1px solid #dbe4f0;border-radius:11px;background:white;color:var(--blue);font-size:21px;font-weight:800;box-shadow:0 2px 5px #0f172a0b}.key:active,.btn:active{transform:translateY(1px)}.key.used{opacity:.35}.tools{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}.tools .btn{padding:10px 13px}.message{min-height:22px;text-align:center;font-weight:700;color:var(--muted);font-size:14px;margin-top:10px}.message.good{color:var(--green)}.message.bad{color:var(--red)}.lower{display:grid;grid-template-columns:1fr 1fr;gap:12px}.lower h2{font-size:17px;color:var(--navy);margin:0 0 8px}.lower p{font-size:14px;line-height:1.45;color:var(--muted);margin:6px 0}.guide-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}.guide-list button{text-align:left;background:#f1f5f9;border:0;border-radius:9px;padding:9px;font-size:13px;font-weight:700;color:#334155}.modal{position:fixed;inset:0;background:#0f172a99;display:none;align-items:center;justify-content:center;padding:16px;z-index:10}.modal.show{display:flex}.modal-box{background:white;width:min(520px,100%);max-height:85vh;overflow:auto;border-radius:18px;padding:20px}.modal-box h2{margin:0 0 10px;color:var(--navy)}.modal-box p,.modal-box li{line-height:1.5;color:#475569}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.close{float:right}.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:20px;padding:4px 9px;font-size:12px;font-weight:800}.footer{text-align:center;color:#94a3b8;font-size:11px;margin:16px 0 0}
-@media(max-width:520px){.app{padding:calc(18px + env(safe-area-inset-top, 0px)) 9px calc(25px + env(safe-area-inset-bottom, 0px))}.controls{grid-template-columns:1fr 1fr}.controls .newgame{grid-column:1/-1}.stats{gap:5px}.stat b{font-size:18px}.stat span{font-size:11px}.panel{padding:11px}.keypad{gap:4px}.key{padding:10px 0;font-size:19px}.lower{grid-template-columns:1fr}.cell{font-size:clamp(17px,5.3vw,27px)}}
-</style></head>
-<body><main class="app">
-<header class="top"><div class="brand"><div class="logo">9</div><div><h1>Sudoku Master</h1><small>Brain Training Edition</small></div></div><button class="btn" id="helpTop">How to play</button></header>
-<section class="panel"><div class="controls"><div class="field"><label for="level">CHOOSE CHALLENGE</label><select id="level"><option value="1">1 · Easy</option><option value="2">2 · Medium</option><option value="3">3 · Hard</option><option value="4">4 · Expert</option><option value="5">5 · Master</option><option value="6">6 · Extreme</option><option value="7">7 · Diabolical</option><option value="8">8 · Grandmaster</option><option value="9">9 · Genius</option></select></div><div class="field"><label>GAME STATUS</label><div class="badge" id="status">Ready to play</div></div><button class="btn primary newgame" id="newGame">New Game</button></div></section>
-<section class="panel"><div class="stats"><div class="stat"><b id="timer">00:00</b><span>Time</span></div><div class="stat"><b id="mistakes">0/3</b><span>Mistakes</span></div><div class="stat"><b id="score">0</b><span>Game points</span></div><div class="stat"><b id="totalScore">0</b><span>Total points</span></div></div><div class="tools"><button class="btn" id="pause">Ⅱ Pause</button><button class="btn" id="hint">💡 Hint</button><button class="btn" id="guide">📘 Techniques</button></div></section>
-<div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Sudoku board"></div><div class="instruction" id="instruction">Select an empty square, then choose a number.</div><div class="keypad" id="keypad"></div><div class="tools"><button class="btn" id="notes">✎ Notes: Off</button><button class="btn" id="erase">⌫ Erase</button><button class="btn" id="undo">↶ Undo</button><button class="btn" id="check">Check board</button></div><div class="message" id="message" aria-live="polite"></div></div>
-<div class="lower"><section class="panel"><h2>🏅 Your progress</h2><p id="progress">Puzzles completed: 0</p><p id="best">Best time: —</p><p id="accuracy">Accuracy: —</p><button class="btn" id="achievements">View achievements</button></section><section class="panel"><h2>🧠 Learn Sudoku</h2><p>Learn the logic behind each move. Start with basic techniques and work towards advanced patterns.</p><div class="guide-list"><button data-tech="Naked Single">Naked Single</button><button data-tech="Hidden Single">Hidden Single</button><button data-tech="Naked Pair">Naked Pair</button><button data-tech="Pointing Pair">Pointing Pair</button><button data-tech="X-Wing">X-Wing</button><button data-tech="XY-Wing">XY-Wing</button></div></section></div>
-<p class="footer">Your game and progress are saved on this device. No account required.</p></main>
-<div class="modal" id="modal"><div class="modal-box"><button class="btn close" id="closeModal">✕</button><div id="modalContent"></div><div class="modal-actions"><button class="btn primary" id="modalOk">Got it</button></div></div></div>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6f8;color:#1f2937;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;justify-content:center;min-height:100vh}
+.app{width:min(100%,520px);padding:calc(18px + env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom))}
+h1{text-align:center;margin:4px 0 3px;font-size:30px}
+.subtitle{text-align:center;color:#6b7280;margin-bottom:16px}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 auto 12px;max-width:450px}.top button,.top select{width:100%;min-width:0}
+button,select{font:inherit;border:0;border-radius:10px;padding:10px 13px;background:white;box-shadow:0 1px 4px #0002}
+button{cursor:pointer;font-weight:600}
+button:active{transform:scale(.98)}
+.primary{background:#2563eb;color:white}
+.info{display:flex;justify-content:space-between;gap:8px;margin:10px 2px;font-weight:700}
+.info span{background:white;padding:8px 11px;border-radius:10px;flex:1;text-align:center}
+.board{position:relative;width:min(94vw,450px);aspect-ratio:1;margin:12px auto;background:#111827;display:grid;grid-template-columns:repeat(9,1fr);border:3px solid #111827;border-radius:5px;overflow:hidden}
+.cell{position:relative;background:white;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:clamp(21px,7vw,32px);font-weight:600;cursor:pointer;user-select:none}
+.cell:nth-child(3n){border-right:2px solid #111827}
+.cell:nth-child(n+19):nth-child(-n+27),.cell:nth-child(n+46):nth-child(-n+54){border-bottom:2px solid #111827}
+.cell.given{background:#e9eef5;color:#111827}
+.cell.selected{background:#dbeafe}
+.cell.same{background:#dbeafe !important}
+.cell.numberMatch{background:#bfdbfe !important;color:#1d4ed8 !important}
+.cell.related{background:#f1f5f9}
+.cell.error{background:#fee2e2;color:#b91c1c}
+.cell .notes{position:absolute;inset:2px;display:grid;grid-template-columns:repeat(3,1fr);font-size:10px;color:#64748b;font-weight:500;line-height:1}
+.cell .notes span{display:flex;align-items:center;justify-content:center}
+.controls{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:450px;margin:14px auto}
+.controls button{padding:13px 5px;font-size:18px}
+.status{text-align:center;min-height:24px;margin:8px;color:#475569;font-weight:600}
+.stats{background:white;border-radius:14px;padding:13px;margin-top:16px;box-shadow:0 1px 5px #0001}
+.stats h2{font-size:18px;margin:0 0 9px}
+.stats p{margin:5px 0;color:#475569}.bestGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}.bestGrid p{margin:3px 0}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:5}
+.modal.show{display:flex}
+ 
+.modalbox{background:white;border-radius:18px;padding:24px;text-align:center;width:min(360px,100%);box-shadow:0 10px 40px #0005}
+.modalbox h2{margin-top:0}
+.small{font-size:13px;color:#64748b}
+@media(max-width:360px){.app{padding-left:8px;padding-right:8px}.cell{font-size:20px}.controls{gap:5px}.top{gap:7px}.top button,.top select{padding:10px 8px;font-size:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>Sudoku Master</h1>
+  <div class="subtitle">Brain Training Edition · Think deeper, solve smarter.</div>
+
+  <div class="top">
+    <select id="difficulty" aria-label="Difficulty">
+      <option value="easy">1 · Easy</option>
+      <option value="medium" selected>2 · Medium</option>
+      <option value="hard">3 · Hard</option>
+      <option value="expert">4 · Expert</option>
+      <option value="master">5 · Master</option>
+      <option value="extreme">6 · Extreme</option>
+      <option value="diabolical">7 · Diabolical</option>
+      <option value="grandmaster">8 · Grandmaster</option>
+      <option value="genius">9 · Genius</option>
+    </select>
+    <button class="primary" id="newGame">New Game</button>
+    <button id="pauseBtn">⏸ Pause</button>
+    <button id="continueBtn">Continue</button>
+  </div>
+
+  <div class="info">
+    <span>⏱ <b id="timer">00:00</b></span>
+    <span>❌ Mistakes: <b id="mistakes">0</b>/3</span>
+  </div>
+
+  <div id="board" class="board" aria-label="Sudoku board"></div>
+  <div id="status" class="status">Select a square, then enter a number.</div>
+
+  <div class="controls">
+    <button data-num="1">1</button><button data-num="2">2</button><button data-num="3">3</button>
+    <button data-num="4">4</button><button data-num="5">5</button><button data-num="6">6</button>
+    <button data-num="7">7</button><button data-num="8">8</button><button data-num="9">9</button>
+    <button id="erase">⌫</button><button id="notes">✎ Notes</button>
+    <button id="undo">↩ Undo</button>
+  </div>
+
+  <div class="stats">
+    <h2>Personal Best Times</h2>
+    <div id="bestTimes" class="bestGrid"></div>
+  </div>
+  <p class="small" style="text-align:center;margin-top:14px">Your current game is saved automatically on this device.</p>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modalbox">
+    <h2 id="modalTitle">Puzzle Complete! 🎉</h2>
+    <p id="modalText"></p>
+    <button class="primary" id="modalNew">New Game</button>
+  </div>
+</div>
+
 <script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id), STORE='sudokuMasterBrain_v1';
-const names=['','Easy','Medium','Hard','Expert','Master','Extreme','Diabolical','Grandmaster','Genius'];
-const clueTargets={1:40,2:36,3:33,4:30,5:28,6:26,7:25,8:24,9:23};
-const techInfo={
-'Naked Single':['A cell has only one possible candidate.','Write down the possible digits for an empty cell. If only one digit fits its row, column and box, that digit must go there.'],
-'Hidden Single':['A digit can fit in only one cell of a row, column or box.','Even if a cell has several candidates, a digit may appear as a candidate in only one place in a unit. That digit is forced into that cell.'],
-'Naked Pair':['Two cells in one unit share exactly the same two candidates.','If two cells in a row, column or box contain the same pair and no other candidates, those two digits can be removed from every other cell in that unit.'],
-'Pointing Pair':['Candidates in a box are confined to one row or column.','If all possible locations for a digit inside a 3×3 box lie in the same row, remove that digit from the rest of that row outside the box. The same rule works for a column.'],
-'X-Wing':['A digit forms matching pairs in two rows and two columns.','If a candidate appears in exactly the same two columns in each of two rows, those columns form a rectangle. Remove that candidate from other cells in those columns.'],
-'Swordfish':['A digit forms a three-row and three-column pattern.','When a candidate is confined to the same three columns across three rows (with two or three positions in each), eliminate it from those columns in all other rows.'],
-'XY-Wing':['Three bivalue cells form a pivot and two wings.','A pivot with candidates XY sees one wing XZ and another YZ. If the wings see each other, candidate Z can be removed from cells that see both wings.'],
-'Advanced chains':['A chain of candidate relationships proves an elimination.','Advanced chain methods follow alternating candidate assumptions through linked cells. If both possible starting choices lead to a contradiction or the same conclusion, a candidate can be removed.']};
-let puzzle=[],solution=[],fixed=[],values=[],notes=[],selected=-1,activeDigit=0,undoStack=[],mistakes=0,seconds=0,paused=false,notesMode=false,finished=false,gamePoints=0,level=1,correctEntries=0,wrongEntries=0,lastHint=null,tick=null;
-let profile={total:0,completed:0,best:{},attempts:0,correct:0,wrong:0,streak:0,achievements:[]};
-function loadProfile(){try{let p=JSON.parse(localStorage.getItem(STORE+'_profile'));if(p&&typeof p==='object')profile={...profile,...p,best:p.best||{},achievements:p.achievements||[]}}catch(e){}}
-function saveProfile(){try{localStorage.setItem(STORE+'_profile',JSON.stringify(profile))}catch(e){}}
-function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const boardEl=document.getElementById("board");
+const difficultyEl=document.getElementById("difficulty");
+const timerEl=document.getElementById("timer");
+const mistakesEl=document.getElementById("mistakes");
+const statusEl=document.getElementById("status");
+let solution=[], puzzle=[], values=[], notes=Array.from({length:81},()=>new Set());
+let given=new Set(), selected=-1, mistakes=0, seconds=0, timer=null, noteMode=false, history=[], timerPaused=false, gameId="";
+const KEY="sudokuMasterUpgradeV1";
+
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function pattern(r,c){return (r*3+Math.floor(r/3)+c)%9}
-function makeSolution(){let rows=[0,1,2].flatMap(g=>shuffle([0,1,2]).map(x=>g*3+x));let cols=[0,1,2].flatMap(g=>shuffle([0,1,2]).map(x=>g*3+x));let nums=shuffle([1,2,3,4,5,6,7,8,9]);let out=[];for(let r of rows)for(let c of cols)out.push(nums[pattern(r,c)]);return out}
-function countSolutions(grid,limit=2){let b=grid.slice(),count=0;function rec(){if(count>=limit)return;let best=-1,opts=null,min=10;for(let i=0;i<81;i++)if(!b[i]){let used=new Set();let r=Math.floor(i/9),c=i%9;for(let k=0;k<9;k++){used.add(b[r*9+k]);used.add(b[k*9+c]);used.add(b[Math.floor(r/27)*27+Math.floor(c/3)*3+Math.floor(r%9/3)*9+k%3+Math.floor(k/3)*9])}let cand=[];for(let n=1;n<=9;n++)if(!used.has(n))cand.push(n);if(!cand.length)return;if(cand.length<min){min=cand.length;best=i;opts=cand;if(min===1)break}}if(best<0){count++;return}for(let n of opts){b[best]=n;rec();b[best]=0;if(count>=limit)return}}rec();return count}
-function generatePuzzle(lv){let sol=makeSolution(),grid=sol.slice(),target=clueTargets[lv]||30,order=shuffle([...Array(81).keys()]);for(let i of order){if(grid.filter(Boolean).length<=target)break;let old=grid[i];grid[i]=0;if(countSolutions(grid,2)!==1)grid[i]=old}return {grid,sol}}
-function saveGame(){if(!puzzle.length||finished)return;let data={v:1,puzzle,solution,values,notes,fixed,selected,activeDigit,level,mistakes,seconds,paused,notesMode,gamePoints,correctEntries,wrongEntries,undoStack:undoStack.slice(-30)};try{localStorage.setItem(STORE+'_game',JSON.stringify(data))}catch(e){}}
-function validGame(g){if(!g||g.v!==1||!Array.isArray(g.puzzle)||!Array.isArray(g.solution)||!Array.isArray(g.values)||!Array.isArray(g.fixed)||g.puzzle.length!==81||g.solution.length!==81||g.values.length!==81||g.fixed.length!==81)return false;for(let i=0;i<81;i++){if(!Number.isInteger(g.puzzle[i])||g.puzzle[i]<0||g.puzzle[i]>9||!Number.isInteger(g.solution[i])||g.solution[i]<1||g.solution[i]>9||!Number.isInteger(g.values[i])||g.values[i]<0||g.values[i]>9)return false;if(g.puzzle[i]&&g.puzzle[i]!==g.solution[i])return false;if(g.fixed[i]!==!!g.puzzle[i])return false;}return countSolutions(g.puzzle,2)===1}
-function restore(){try{let g=JSON.parse(localStorage.getItem(STORE+'_game'));if(!validGame(g))return false;puzzle=g.puzzle;solution=g.solution;values=g.values;fixed=g.fixed;notes=Array.isArray(g.notes)&&g.notes.length===81?g.notes:Array.from({length:81},()=>[]);selected=Number.isInteger(g.selected)?g.selected:-1;activeDigit=Number.isInteger(g.activeDigit)&&g.activeDigit>=1&&g.activeDigit<=9?g.activeDigit:0;level=g.level>=1&&g.level<=9?g.level:1;mistakes=Math.min(3,Math.max(0,g.mistakes|0));seconds=Math.max(0,g.seconds|0);paused=!!g.paused;notesMode=!!g.notesMode;gamePoints=Math.max(0,g.gamePoints|0);correctEntries=g.correctEntries|0;wrongEntries=g.wrongEntries|0;undoStack=Array.isArray(g.undoStack)?g.undoStack:[];return true}catch(e){return false}}
-function newGame(confirmIt=false){if(confirmIt&&!finished&&!confirm('Start a new puzzle? Your current unsolved game will be replaced.')){$('level').value=String(level);return;}level=+$('level').value||1;let p=generatePuzzle(level);puzzle=p.grid;solution=p.sol;values=p.grid.slice();fixed=p.grid.map(Boolean);notes=Array.from({length:81},()=>[]);selected=-1;activeDigit=0;undoStack=[];mistakes=0;seconds=0;paused=false;notesMode=false;finished=false;gamePoints=0;correctEntries=0;wrongEntries=0;lastHint=null;$('status').textContent='In progress';$('message').textContent='';$('message').className='message';if(tick)clearInterval(tick);tick=setInterval(clock,1000);render();saveGame()}
-function clock(){if(!paused&&!finished){seconds++;$('timer').textContent=formatTime(seconds);if(seconds%5===0)saveGame()}}
-function formatTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
-function render(){ $('level').value=String(level);$('timer').textContent=formatTime(seconds);$('mistakes').textContent=mistakes+'/3';$('score').textContent=gamePoints;$('totalScore').textContent=profile.total;$('pause').textContent=paused?'▶ Resume':'Ⅱ Pause';$('notes').textContent='✎ Notes: '+(notesMode?'On':'Off');$('status').textContent=finished?'Completed':paused?'Timer paused':'In progress';let board=$('board');board.innerHTML='';for(let i=0;i<81;i++){let r=Math.floor(i/9),c=i%9,el=document.createElement('button');el.className='cell';el.type='button';el.setAttribute('role','gridcell');el.setAttribute('aria-label',`Row ${r+1}, column ${c+1}, ${values[i]||'empty'}`);if(fixed[i])el.classList.add('given');if(selected>=0){let sr=Math.floor(selected/9),sc=selected%9;if(r===sr||c===sc||(Math.floor(r/3)===Math.floor(sr/3)&&Math.floor(c/3)===Math.floor(sc/3)))el.classList.add('related');if(activeDigit&&values[i]===activeDigit)el.classList.add('same')}if(i===selected)el.classList.add('selected');if(i===lastHint)el.classList.add('hint');if(values[i]){el.textContent=values[i];if(!fixed[i]&&values[i]!==solution[i])el.classList.add('error')}else{let ng=document.createElement('div');ng.className='notes-grid';for(let n=1;n<=9;n++){let sp=document.createElement('span');sp.textContent=notes[i].includes(n)?n:'';ng.append(sp)}el.append(ng)}el.disabled=finished;el.addEventListener('click',()=>{if(!finished){selected=i;if(values[i])activeDigit=values[i];else activeDigit=0;lastHint=null;render()}});board.append(el)}let kp=$('keypad');kp.innerHTML='';for(let n=1;n<=9;n++){let b=document.createElement('button');b.className='key';b.textContent=n;b.type='button';let count=values.filter(v=>v===n).length;if(count===9)b.classList.add('used');b.addEventListener('click',()=>enter(n));kp.append(b)}$('undo').disabled=!undoStack.length;$('pause').disabled=finished;$('hint').disabled=finished;$('notes').disabled=finished;$('erase').disabled=finished||selected<0;$('check').disabled=finished;$('progress').textContent='Puzzles completed: '+profile.completed;$('best').textContent='Best time: '+(profile.best[level]?formatTime(profile.best[level]):'—');$('accuracy').textContent='Accuracy: '+(profile.correct+profile.wrong?Math.round(profile.correct/(profile.correct+profile.wrong)*100)+'%':'—')}
-function enter(n){activeDigit=n;if(finished||selected<0||fixed[selected]){say('Select an empty square first.','bad');return}let i=selected;if(notesMode&&!values[i]){pushUndo();notes[i]=notes[i].includes(n)?notes[i].filter(x=>x!==n):[...notes[i],n];render();saveGame();return}if(values[i]===n)return;pushUndo();notes[i]=[];values[i]=n;profile.attempts++;if(n===solution[i]){correctEntries++;profile.correct++;gamePoints+=10*level;for(let j=0;j<81;j++)if(notes[j])notes[j]=notes[j].filter(x=>x!==n);say('Correct! +'+(10*level)+' points.','good');if(values.every((v,k)=>v===solution[k]))complete()}else{mistakes++;wrongEntries++;profile.wrong++;say('Not quite. Try another number.','bad');if(mistakes>=3){finished=true;paused=true;if(tick)clearInterval(tick);try{localStorage.removeItem(STORE+'_game')}catch(e){}say('Three mistakes. Game over. Start a new puzzle to try again.','bad')}}saveProfile();render();saveGame()}
-function pushUndo(){undoStack.push({values:values.slice(),notes:notes.map(a=>a.slice()),mistakes,gamePoints,correctEntries,wrongEntries});if(undoStack.length>30)undoStack.shift()}
-function undo(){let s=undoStack.pop();if(!s)return;values=s.values;notes=s.notes;mistakes=s.mistakes;gamePoints=s.gamePoints;correctEntries=s.correctEntries;wrongEntries=s.wrongEntries;finished=false;render();saveGame();say('Last move undone.','')}
-function erase(){if(selected<0||fixed[selected]||finished)return;pushUndo();values[selected]=0;notes[selected]=[];render();saveGame();say('Cell cleared.','')}
-function complete(){finished=true;paused=true;if(tick)clearInterval(tick);let timeBonus=Math.max(0,Math.floor((3600-seconds)/30))*level;let cleanBonus=mistakes===0?100*level:0;let earned=gamePoints+timeBonus+cleanBonus;gamePoints=earned;profile.total+=earned;profile.completed++;profile.best[level]=Math.min(profile.best[level]||Infinity,seconds);if(mistakes===0)profile.streak++;else profile.streak=0;let award=profile.completed===1?'First Finish':profile.completed===10?'Ten Puzzles':null;if(award&&!profile.achievements.includes(award))profile.achievements.push(award);saveProfile();try{localStorage.removeItem(STORE+'_game')}catch(e){}render();openModal(`<h2>🎉 Puzzle completed!</h2><p>Excellent work. You solved the ${names[level]} puzzle.</p><p><b>Time:</b> ${formatTime(seconds)}<br><b>Points earned:</b> ${earned}<br><b>Clean solve bonus:</b> ${cleanBonus}</p><p>Your total score is now <b>${profile.total}</b>.</p>`);}
-function say(t,kind){$('message').textContent=t;$('message').className='message '+(kind||'')}
-function togglePause(){if(finished)return;paused=!paused;$('pause').textContent=paused?'▶ Resume':'Ⅱ Pause';$('status').textContent=paused?'Timer paused':'In progress';say(paused?'Timer paused. The puzzle remains visible.':'Timer resumed.','');saveGame()}
-function validPlacement(i,n){let r=Math.floor(i/9),c=i%9;for(let k=0;k<9;k++)if(k!==c&&values[r*9+k]===n)return false;for(let k=0;k<9;k++)if(k!==r&&values[k*9+c]===n)return false;let br=Math.floor(r/3)*3,bc=Math.floor(c/3)*3;for(let rr=br;rr<br+3;rr++)for(let cc=bc;cc<bc+3;cc++)if((rr!==r||cc!==c)&&values[rr*9+cc]===n)return false;return true}
-function candidates(grid,i){if(grid[i])return [];let r=Math.floor(i/9),c=i%9,used=new Set();for(let k=0;k<9;k++){used.add(grid[r*9+k]);used.add(grid[k*9+c])}let br=Math.floor(r/3)*3,bc=Math.floor(c/3)*3;for(let rr=br;rr<br+3;rr++)for(let cc=bc;cc<bc+3;cc++)used.add(grid[rr*9+cc]);return [1,2,3,4,5,6,7,8,9].filter(n=>!used.has(n))}
-function getHint(){if(finished)return;let grid=values.slice(),cands=grid.map((v,i)=>candidates(grid,i));let hint=null;for(let i=0;i<81&&!hint;i++)if(!grid[i]&&cands[i].length===1)hint={i,n:cands[i][0],tech:'Naked Single',why:'This cell has only one possible number.'};
-if(!hint){for(let unitType=0;unitType<3&&!hint;unitType++)for(let u=0;u<9&&!hint;u++)for(let n=1;n<=9&&!hint;n++){let cells=[];for(let k=0;k<9;k++){let i=unitType===0?u*9+k:unitType===1?k*9+u:Math.floor(u/3)*27+(u%3)*3+Math.floor(k/3)*9+k%3;if(!grid[i]&&cands[i].includes(n))cells.push(i)}if(cells.length===1)hint={i:cells[0],n,tech:'Hidden Single',why:`${n} can go in only one cell in this ${['row','column','box'][unitType]}.`}}}
-if(!hint){for(let i=0;i<81&&!hint;i++)if(!grid[i]&&cands[i].length===2){let r=Math.floor(i/9),c=i%9;for(let j=i+1;j<81&&!hint;j++)if(!grid[j]&&cands[j].length===2&&cands[i].join()==cands[j].join()){let r2=Math.floor(j/9),c2=j%9,unit=r===r2?'row':c===c2?'column':Math.floor(r/3)===Math.floor(r2/3)&&Math.floor(c/3)===Math.floor(c2/3)?'box':'';if(unit){hint={i,n:cands[i][0],tech:'Naked Pair',why:`These two cells form a naked pair in the ${unit}. Their two candidates are reserved for these cells.`};break}}}}
-if(hint){lastHint=hint.i;selected=hint.i;openModal(`<h2>💡 ${hint.tech}</h2><p>${hint.why}</p><p>The highlighted cell is part of the logical step. Candidate answer: <b>${hint.n}</b>.</p><p>You can enter it yourself, or close this guide and continue thinking.`);render();say('Hint: '+hint.tech,'good')}else{openModal('<h2>Advanced hint</h2><p>This position needs a technique beyond the basic hint finder. Review the advanced technique guides, or continue solving by hand. The game will not enter a number for you.</p>')}}
-function openModal(html){$('modalContent').innerHTML=html;$('modal').classList.add('show')}
-function closeModal(){$('modal').classList.remove('show')}
-function showHelp(){openModal(`<h2>How to play Sudoku Master</h2><ol><li>Fill every row, column and 3×3 box with digits 1–9, without repeating a digit.</li><li>Tap an empty square, then tap a number.</li><li>Turn Notes on to pencil in possible candidates.</li><li>Use Undo to reverse your last move and Erase to clear a cell.</li><li>Three incorrect entries end the game. Pause stops the timer only.</li><li>Hints explain a logical technique; they do not automatically fill the cell.</li></ol><p>Points are awarded for correct entries. Harder levels award more points, with time and clean-solve bonuses at completion. The nine launch levels use progressively fewer clues and every generated puzzle is checked for a unique solution. The first release does not yet certify that every advanced puzzle can be solved using logic alone.</p><p><b>Tip:</b> Look for a cell with one candidate, or a digit that has only one possible place in a row, column or box.</p>`)}
-function showTech(name){let t=techInfo[name]||techInfo['Advanced chains'];openModal(`<h2>${name}</h2><p><b>${t[0]}</b></p><p>${t[1]}</p><p>Practice: scan one row, column or 3×3 box at a time. Write candidates only where they help you see a pattern.</p>`)}
-function showAchievements(){openModal(`<h2>🏅 Your achievements</h2><p>Puzzles completed: <b>${profile.completed}</b></p><p>Total points: <b>${profile.total}</b></p><p>Correct entries: <b>${profile.correct}</b></p><p>Incorrect entries: <b>${profile.wrong}</b></p><p>Unlocked: ${(profile.achievements||[]).join(', ')||'Complete your first puzzle to earn a badge.'}</p><p>Best times by level:</p><ul>${Object.keys(profile.best).sort((a,b)=>a-b).map(k=>`<li>${names[k]}: ${formatTime(profile.best[k])}</li>`).join('')}</ul>`)}
-$('newGame').addEventListener('click',()=>newGame(true));$('level').addEventListener('change',()=>{level=+$('level').value;newGame(true)});$('pause').addEventListener('click',togglePause);$('hint').addEventListener('click',getHint);$('guide').addEventListener('click',()=>showTech('Naked Single'));$('helpTop').addEventListener('click',showHelp);$('modalOk').addEventListener('click',closeModal);$('closeModal').addEventListener('click',closeModal);$('notes').addEventListener('click',()=>{notesMode=!notesMode;render();saveGame()});$('erase').addEventListener('click',erase);$('undo').addEventListener('click',undo);$('check').addEventListener('click',()=>{let conflicts=0;for(let i=0;i<81;i++)if(values[i]&&!fixed[i]&&!validPlacement(i,values[i]))conflicts++;say(conflicts?`${conflicts} rule conflict(s) found.`: 'No row, column or box conflicts found.',''+(conflicts?'bad':'good'))});$('achievements').addEventListener('click',showAchievements);document.querySelectorAll('[data-tech]').forEach(b=>b.addEventListener('click',()=>showTech(b.dataset.tech)));
-loadProfile();if(restore()){if(tick)clearInterval(tick);tick=setInterval(clock,1000);render();say('Your saved puzzle has been restored.','good')}else{try{localStorage.removeItem(STORE+'_game')}catch(e){}newGame(false)}
-})();
-</script></body></html>
+function makeSolution(){
+  // Randomized backtracking creates genuinely varied completed grids;
+  // unlike a simple row/column pattern, it avoids highly regular structures.
+  const g=Array(81).fill(0);
+  function candidates(i){
+    const r=Math.floor(i/9),c=i%9,used=new Set();
+    for(let k=0;k<9;k++){used.add(g[r*9+k]);used.add(g[k*9+c]);}
+    const br=Math.floor(r/3)*3,bc=Math.floor(c/3)*3;
+    for(let rr=br;rr<br+3;rr++)for(let cc=bc;cc<bc+3;cc++)used.add(g[rr*9+cc]);
+    return shuffle([1,2,3,4,5,6,7,8,9].filter(n=>!used.has(n)));
+  }
+  function fill(){
+    let best=-1,opts=null;
+    for(let i=0;i<81;i++)if(!g[i]){const a=candidates(i);if(!opts||a.length<opts.length){best=i;opts=a;if(a.length<=1)break;}}
+    if(best<0)return true;
+    for(const n of opts){g[best]=n;if(fill())return true;g[best]=0;}
+    return false;
+  }
+  fill();return g;
+}
+function countSolutions(grid,limit=2){
+  let count=0;
+  function solve(){
+    if(count>=limit)return;
+    let best=-1,opts=null;
+    for(let i=0;i<81;i++)if(grid[i]===0){
+      const r=Math.floor(i/9),c=i%9,used=new Set();
+      for(let k=0;k<9;k++){used.add(grid[r*9+k]);used.add(grid[k*9+c]);}
+      const br=Math.floor(r/3)*3,bc=Math.floor(c/3)*3;
+      for(let rr=br;rr<br+3;rr++)for(let cc=bc;cc<bc+3;cc++)used.add(grid[rr*9+cc]);
+      const o=[];for(let n=1;n<=9;n++)if(!used.has(n))o.push(n);
+      if(!opts||o.length<opts.length){best=i;opts=o;if(o.length<=1)break;}
+    }
+    if(best<0){count++;return;}
+    if(!opts.length)return;
+    for(const n of opts){grid[best]=n;solve();grid[best]=0;if(count>=limit)return;}
+  }
+  solve();return count;
+}
+const LEVELS=[
+  ['easy','Easy',38],['medium','Medium',45],['hard','Hard',50],
+  ['expert','Expert',53],['master','Master',55],['extreme','Extreme',57],
+  ['diabolical','Diabolical',59],['grandmaster','Grandmaster',61],['genius','Genius',63]
+];
+function makePuzzle(diff){
+  // Remove clues in a randomized order, retaining exactly one solution.
+  // More advanced levels start with fewer clues and use a fresh randomized grid.
+  const target=LEVELS.find(x=>x[0]===diff)?.[2]??45;
+  let best=null,bestRemoved=-1;
+  // Several randomized attempts reduce the chance of an overly regular puzzle.
+  for(let attempt=0;attempt<4;attempt++){
+    const solved=makeSolution(),candidate=[...solved],order=shuffle([...Array(81).keys()]);
+    let removed=0;
+    for(const i of order){
+      if(removed>=target)break;
+      const old=candidate[i];candidate[i]=0;
+      if(countSolutions(candidate.slice(),2)!==1)candidate[i]=old;
+      else removed++;
+    }
+    if(removed>bestRemoved){best=[...candidate];bestRemoved=removed;}
+    if(removed>=target)break;
+  }
+  if(!best)best=[...makeSolution()];
+  puzzle=best;
+  // Store the matching completed grid, validated against all givens.
+  solution=[...makeSolution()];
+  // Recover the unique solution of the generated puzzle.
+  const work=[...puzzle];
+  function solveOne(){
+    let bestCell=-1,bestOpts=null;
+    for(let i=0;i<81;i++)if(!work[i]){
+      const r=Math.floor(i/9),c=i%9,u=new Set();
+      for(let k=0;k<9;k++){u.add(work[r*9+k]);u.add(work[k*9+c]);}
+      const br=Math.floor(r/3)*3,bc=Math.floor(c/3)*3;
+      for(let rr=br;rr<br+3;rr++)for(let cc=bc;cc<bc+3;cc++)u.add(work[rr*9+cc]);
+      const a=[];for(let n=1;n<=9;n++)if(!u.has(n))a.push(n);
+      if(!bestOpts||a.length<bestOpts.length){bestCell=i;bestOpts=a;if(a.length<=1)break;}
+    }
+    if(bestCell<0)return true;
+    for(const n of bestOpts){work[bestCell]=n;if(solveOne())return true;work[bestCell]=0;}
+    return false;
+  }
+  solveOne();solution=work;
+  return puzzle;
+}
+function startNew(){
+  stopTimer(); const diff=difficultyEl.value;
+  makePuzzle(diff); values=[...puzzle];notes=Array.from({length:81},()=>new Set());
+  given=new Set(values.map((v,i)=>v?i:-1).filter(i=>i>=0));
+  selected=-1;mistakes=0;seconds=0;history=[];noteMode=false;timerPaused=false;gameId=Date.now().toString(36)+"-"+Math.random().toString(36).slice(2);
+  statusEl.textContent="Select a square, then enter a number.";
+  render();updateInfo();startTimer();save();
+}
+function fmt(total){
+  const m=Math.floor(total/60),sec=total%60;
+  return String(m).padStart(2,"0")+":"+String(sec).padStart(2,"0");
+}
+function updateInfo(){
+  timerEl.textContent=fmt(seconds);
+  mistakesEl.textContent=String(mistakes);
+}
+function stopTimer(){
+  if(timer){clearInterval(timer);timer=null;}
+}
+function startTimer(){if(timer)return;timer=setInterval(()=>{seconds++;updateInfo();if(seconds%5===0)save()},1000)}
+function render(){
+  boardEl.innerHTML="";
+  const selVal=selected>=0?values[selected]:0;
+  const selRow=selected>=0?Math.floor(selected/9):-1;
+  const selCol=selected>=0?selected%9:-1;
+
+  for(let i=0;i<81;i++){
+    const cell=document.createElement("div");
+    cell.className="cell";
+    const row=Math.floor(i/9), col=i%9;
+
+    if(given.has(i))cell.classList.add("given");
+    if(i===selected)cell.classList.add("selected");
+    if(selVal && values[i]===selVal)cell.classList.add("numberMatch");
+    if(selected>=0 && (row===selRow || col===selCol))cell.classList.add("related");
+    if(values[i] && !given.has(i) && values[i]!==solution[i])cell.classList.add("error");
+
+    if(values[i]){
+      cell.textContent=values[i];
+    }else if(notes[i].size){
+      const ns=document.createElement("div");
+      ns.className="notes";
+      for(let n=1;n<=9;n++){
+        const sp=document.createElement("span");
+        sp.textContent=notes[i].has(n)?n:"";
+        ns.appendChild(sp);
+      }
+      cell.appendChild(ns);
+    }
+
+    cell.onclick=()=>{
+      selected=i;
+      statusEl.textContent=given.has(i)?"This number is fixed.":"Enter a number.";
+      render();
+    };
+    boardEl.appendChild(cell);
+  }
+}
+
+function snapshot(){history.push({values:values.slice(),notes:notes.map(s=>new Set(s)),mistakes})}
+function inputNumber(n){
+  if(selected<0){statusEl.textContent="Select a square first.";return}
+  if(given.has(selected)){statusEl.textContent="That square is fixed.";return}
+  if(noteMode){
+    snapshot(); notes[selected].has(n)?notes[selected].delete(n):notes[selected].add(n);
+    render();save();return;
+  }
+  if(solution[selected]!==n){
+    mistakes++;updateInfo();statusEl.textContent="Not quite — try again.";
+    if(mistakes>=3){finish(false)} return;
+  }
+  snapshot();values[selected]=n;notes[selected].clear();statusEl.textContent="Good move!";
+  render();save();checkWin();
+}
+function erase(){
+  if(selected<0||given.has(selected))return;
+  snapshot();values[selected]=0;notes[selected].clear();render();save();
+}
+function undo(){
+  const h=history.pop();if(!h){statusEl.textContent="Nothing to undo.";return}
+  values=h.values;notes=h.notes;mistakes=h.mistakes;updateInfo();render();save();
+}
+function checkWin(){
+  if(values.every((v,i)=>v===solution[i]))finish(true);
+}
+function finish(win){
+  timerPaused=false;stopTimer();
+  if(win){
+    const diff=difficultyEl.value,key="best"+diff;
+    const old=localStorage.getItem(key);
+    if(!old||seconds<Number(old))localStorage.setItem(key,seconds);
+    document.getElementById("modalTitle").textContent="Puzzle Complete! 🎉";
+    document.getElementById("modalText").textContent=`You solved ${LEVELS.find(x=>x[0]===diff)?.[1]||diff} in ${fmt(seconds)}.`;
+    loadBest();
+  }else{
+    document.getElementById("modalTitle").textContent="Game Over";
+    document.getElementById("modalText").textContent="Three mistakes. Start a new puzzle and try again.";
+  }
+  document.getElementById("modal").classList.add("show");
+  localStorage.removeItem(KEY);
+}
+function loadBest(){
+  const box=document.getElementById("bestTimes");
+  if(!box)return;
+  box.innerHTML=LEVELS.map(([key,label])=>{
+    const v=localStorage.getItem("best"+key);
+    return `<p>${label}: <b>${v?fmt(Number(v)):"—"}</b></p>`;
+  }).join("");
+}
+function save(){
+  localStorage.setItem(KEY,JSON.stringify({
+    version:2,
+    gameId,
+    solution,
+    puzzle,
+    values,
+    notes:notes.map(s=>[...s]),
+    given:[...given],
+    selected,
+    mistakes,
+    seconds,
+    difficulty:difficultyEl.value,
+  }));
+}
+function loadSaved(){
+  const raw=localStorage.getItem(KEY);
+  if(!raw){statusEl.textContent="No saved game found.";return false}
+  try{
+    const x=JSON.parse(raw);
+    if(!Array.isArray(x.solution)||x.solution.length!==81||
+       !Array.isArray(x.puzzle)||x.puzzle.length!==81||
+       !Array.isArray(x.values)||x.values.length!==81||
+       !Array.isArray(x.notes)||x.notes.length!==81||
+       !Array.isArray(x.given)){
+      throw new Error("Invalid saved game");
+    }
+
+    solution=x.solution;
+    puzzle=x.puzzle;
+    values=x.values;
+    notes=x.notes.map(a=>new Set(Array.isArray(a)?a:[]));
+    given=new Set(x.given);
+    selected=Number.isInteger(x.selected)?x.selected:-1;
+    mistakes=Number.isInteger(x.mistakes)?x.mistakes:0;
+    seconds=Number.isInteger(x.seconds)?x.seconds:0;
+    difficultyEl.value=x.difficulty||"medium";
+    timerPaused=false;
+    gameId=x.gameId||("restored-"+Date.now().toString(36));
+    history=[];
+
+    render();
+    updateInfo();
+    stopTimer();
+    document.getElementById("pauseBtn").textContent="⏸ Pause";
+    startTimer();
+
+    statusEl.textContent="Your saved game has been restored.";
+    return true;
+  }catch(e){
+    console.warn("Saved Sudoku could not be restored:",e);
+    localStorage.removeItem(KEY);
+    statusEl.textContent="Starting a new game.";
+    return false;
+  }
+}
+
+function togglePause(){
+  if(timerPaused){
+    timerPaused=false;
+    startTimer();
+    statusEl.textContent="Timer resumed.";
+    document.getElementById("pauseBtn").textContent="⏸ Pause";
+  }else{
+    timerPaused=true;
+    stopTimer();
+    statusEl.textContent="Timer paused — you can continue playing.";
+    document.getElementById("pauseBtn").textContent="▶ Resume Timer";
+  }
+  save();
+}
+
+document.querySelectorAll("[data-num]").forEach(b=>b.onclick=()=>inputNumber(Number(b.dataset.num)));
+document.getElementById("newGame").onclick=startNew;
+document.getElementById("pauseBtn").onclick=togglePause;
+document.getElementById("continueBtn").onclick=loadSaved;
+document.getElementById("erase").onclick=erase;
+document.getElementById("undo").onclick=undo;
+document.getElementById("notes").onclick=()=>{
+  noteMode=!noteMode;
+  document.getElementById("notes").classList.toggle("primary",noteMode);
+  statusEl.textContent=noteMode?"Notes mode ON — enter numbers to add/remove notes.":"Notes mode OFF.";
+};
+document.getElementById("modalNew").onclick=()=>{document.getElementById("modal").classList.remove("show");startNew()};
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")document.getElementById("modal").classList.remove("show")};
+document.addEventListener("keydown",e=>{
+  if(/^[1-9]$/.test(e.key))inputNumber(Number(e.key));
+  if(e.key==="Backspace"||e.key==="Delete")erase();
+  if(e.key==="ArrowLeft"&&selected>=0){selected=Math.max(0,selected-1);render()}
+  if(e.key==="ArrowRight"&&selected>=0){selected=Math.min(80,selected+1);render()}
+});
+loadBest();
+if(!loadSaved())startNew();
+window.addEventListener("pagehide",save);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")save()});
+</script>
+</body>
+</html>
